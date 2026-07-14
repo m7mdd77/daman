@@ -40,7 +40,7 @@ Mainnet
 
 ## Demo video
 
-`TODO_AFTER_RECORDING` (public URL, under 3 minutes)
+https://daman-nine.vercel.app/daman-demo.mp4 (84 seconds, publicly accessible)
 
 ## Social post
 
