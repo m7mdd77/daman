@@ -162,12 +162,38 @@ function App() {
         transport: custom(window.ethereum as never),
       })
       await ensureNetwork()
-      const hash = await activeWallet.writeContract({
+
+      const request = {
         address: contractAddress,
         abi: damanAbi,
         functionName: functionName as never,
         args: args as never,
         value,
+        account: signer,
+      } as const
+
+      // Wallet estimators intermittently fail for Monad transactions. Preflight
+      // through the canonical RPC, retry transient failures, and pass the result
+      // into the wallet so it never has to invent a fallback gas limit.
+      let estimatedGas: bigint | undefined
+      let estimationError: unknown
+      for (let attempt = 0; attempt < 3; attempt += 1) {
+        try {
+          estimatedGas = await publicClient.estimateContractGas(request)
+          break
+        } catch (error) {
+          estimationError = error
+          if (attempt < 2) await new Promise((resolve) => window.setTimeout(resolve, 350 * (attempt + 1)))
+        }
+      }
+      if (!estimatedGas) throw estimationError
+
+      const gas = (estimatedGas * 110n + 99n) / 100n
+      const gasPrice = await publicClient.getGasPrice()
+      const hash = await activeWallet.writeContract({
+        ...request,
+        gas,
+        gasPrice,
       })
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
       if (receipt.status !== 'success') throw new Error('Transaction did not complete successfully.')
