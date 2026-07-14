@@ -4,6 +4,8 @@
 
 Daman is non-custodial escrow for in-person deals arranged through WhatsApp, Instagram, Telegram, or other messaging apps. A seller shares a deal link, the buyer locks the exact payment on Monad, and the buyer releases it only after inspecting the item at handoff.
 
+**Live app:** [daman-nine.vercel.app](https://daman-nine.vercel.app)
+
 ## Why Daman
 
 Informal marketplace deals have a trust gap: buyers do not want to pay before seeing the item, and sellers do not want to travel or hand over an item without knowing the money exists. Daman makes the agreement and funds independently verifiable without becoming another marketplace or holding user money in a company account.

@@ -20,7 +20,7 @@ Daman deliberately solves one narrow problem well: safe in-person handoffs. It h
 
 ## Project URL
 
-`TODO_AFTER_HOSTING`
+https://daman-nine.vercel.app
 
 ## GitHub repository
 
