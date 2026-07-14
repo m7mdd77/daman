@@ -49,7 +49,7 @@ export default function DeployTool() {
   const [result, setResult] = useState<{ address: `0x${string}`; hash: Hash; network: Network } | null>(null)
 
   const connect = async () => {
-    if (!window.ethereum) throw new Error('Install or enable MetaMask before deploying.')
+    if (!window.ethereum) throw new Error('Install or enable an EVM wallet before deploying.')
     const accounts = (await window.ethereum.request({ method: 'eth_requestAccounts' })) as string[]
     if (!accounts[0]) throw new Error('No wallet account was returned.')
     const nextAccount = getAddress(accounts[0])
@@ -58,7 +58,7 @@ export default function DeployTool() {
   }
 
   const ensureNetwork = async (target: Network) => {
-    if (!window.ethereum) throw new Error('MetaMask is not available.')
+    if (!window.ethereum) throw new Error('A browser wallet is not available.')
     const chain = networks[target]
     const chainId = `0x${chain.id.toString(16)}`
     try {
@@ -84,7 +84,7 @@ export default function DeployTool() {
     setError('')
     setResult(null)
     try {
-      if (!window.ethereum) throw new Error('Install or enable MetaMask before deploying.')
+      if (!window.ethereum) throw new Error('Install or enable an EVM wallet before deploying.')
       const activeAccount = account || (await connect())
       await ensureNetwork(network)
 
@@ -95,10 +95,20 @@ export default function DeployTool() {
       const walletClient = createWalletClient({ account: activeAccount, chain, transport: custom(window.ethereum as never) })
       const publicClient = createPublicClient({ chain, transport: http() })
 
+      // Some injected wallets fail to estimate Monad contract creation even when
+      // the canonical RPC succeeds. Estimate through the configured Monad RPC and
+      // include a 20% buffer so the wallet can present a complete transaction.
+      const estimatedGas = await publicClient.estimateGas({
+        account: activeAccount,
+        data: artifact.bytecode,
+      })
+      const gas = (estimatedGas * 120n) / 100n
+
       const hash = await walletClient.deployContract({
         abi: artifact.abi,
         account: activeAccount,
         bytecode: artifact.bytecode,
+        gas,
       })
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
       if (receipt.status !== 'success' || !receipt.contractAddress) throw new Error('Deployment transaction did not produce a contract address.')
@@ -119,7 +129,7 @@ export default function DeployTool() {
         <a className="deploy-back" href="/"><ArrowLeft size={16} /> Back to Daman</a>
         <header className="deploy-header">
           <span><Rocket size={24} /></span>
-          <div><small>WALLET-SIGNED DEPLOYMENT</small><h1>Launch DamanEscrow</h1><p>MetaMask signs the exact bytecode that passed the local contract suite. No private key leaves your wallet.</p></div>
+          <div><small>WALLET-SIGNED DEPLOYMENT</small><h1>Launch DamanEscrow</h1><p>Your wallet signs the exact bytecode that passed the local contract suite. No private key leaves your wallet.</p></div>
         </header>
 
         <section className="deploy-card">
@@ -134,7 +144,7 @@ export default function DeployTool() {
 
           <div className="deploy-step"><span>2</span><div><h2>Connect the deployer</h2><p>Use a dedicated wallet with only the small amount needed for deployment.</p></div></div>
           <button className="connect-deployer" onClick={() => connect().catch((connectError) => setError(compactError(connectError)))}>
-            <Wallet size={18} /> {account ? `${account.slice(0, 7)}…${account.slice(-5)}` : 'Connect MetaMask'}
+            <Wallet size={18} /> {account ? `${account.slice(0, 7)}…${account.slice(-5)}` : 'Connect your wallet'}
           </button>
 
           {network === 'mainnet' && (
@@ -147,7 +157,7 @@ export default function DeployTool() {
           <button className="deploy-button" disabled={working || (network === 'mainnet' && !mainnetConfirmed)} onClick={deploy}>
             {working ? <><LoaderCircle className="spin" size={19} /> Waiting for {chain.name}…</> : <><Rocket size={19} /> Deploy to {chain.name}</>}
           </button>
-          <p className="deploy-cost">MetaMask will show the exact gas estimate before you confirm. Contract deployment sends no escrow value.</p>
+          <p className="deploy-cost">Your wallet will show the network fee before you confirm. Contract deployment sends no escrow value.</p>
 
           {error && <div className="deploy-error">{error}</div>}
           {result && (
