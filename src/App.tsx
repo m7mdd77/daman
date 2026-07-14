@@ -40,6 +40,7 @@ import {
   type Deal,
   ZERO_ADDRESS,
 } from './contract'
+import DeployTool from './DeployTool'
 
 type Page = 'home' | 'create' | 'deals' | 'deal'
 type Notice = { kind: 'success' | 'error' | 'info'; message: string } | null
@@ -69,6 +70,7 @@ function cleanError(error: unknown) {
 
 function App() {
   const params = useMemo(() => new URLSearchParams(window.location.search), [])
+  const deployMode = params.get('deploy') === '1'
   const initialDealId = params.get('deal')
   const [page, setPage] = useState<Page>(initialDealId ? 'deal' : 'home')
   const [selectedDealId, setSelectedDealId] = useState<bigint | null>(
@@ -173,6 +175,8 @@ function App() {
     },
     [account, ensureNetwork],
   )
+
+  if (deployMode) return <DeployTool />
 
   return (
     <div className="app-shell">
