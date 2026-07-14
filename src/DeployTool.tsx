@@ -103,12 +103,14 @@ export default function DeployTool() {
         data: artifact.bytecode,
       })
       const gas = (estimatedGas * 120n) / 100n
+      const gasPrice = await publicClient.getGasPrice()
 
       const hash = await walletClient.deployContract({
         abi: artifact.abi,
         account: activeAccount,
         bytecode: artifact.bytecode,
         gas,
+        gasPrice,
       })
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
       if (receipt.status !== 'success' || !receipt.contractAddress) throw new Error('Deployment transaction did not produce a contract address.')
