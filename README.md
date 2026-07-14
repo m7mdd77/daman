@@ -32,6 +32,13 @@ Informal marketplace deals have a trust gap: buyers do not want to pay before se
 
 > Daman has not received a third-party security audit. Use small amounts for the hackathon demonstration. The current product is limited to in-person handoffs and intentionally does not claim to solve shipping or subjective disputes.
 
+## Live deployments
+
+- **Monad Mainnet:** [`0x6edc1ec5b362823de96f522c3ac37403e026866b`](https://monadscan.com/address/0x6edc1ec5b362823de96f522c3ac37403e026866b)
+- **Verified source:** [Full match on MonadVision](https://monadvision.com/contracts/full_match/143/0x6edc1ec5b362823de96f522c3ac37403e026866b/)
+- **Deployment transaction:** [`0x25f5c822…ad2f239`](https://monadscan.com/tx/0x25f5c8223b0f44d10cc5a62b52262434487fe2f729c28007eb8bc850aad2f239)
+- **Monad Testnet:** [`0x5de920b800e781c648cae2600c351892f7ba7bf2`](https://testnet.monadscan.com/address/0x5de920b800e781c648cae2600c351892f7ba7bf2)
+
 ## Stack
 
 - React, TypeScript, Vite
@@ -80,7 +87,7 @@ Then configure the frontend:
 
 ```dotenv
 VITE_DAMAN_NETWORK=mainnet
-VITE_DAMAN_CONTRACT_ADDRESS=0xDEPLOYED_ADDRESS
+VITE_DAMAN_CONTRACT_ADDRESS=0x6edc1ec5b362823de96f522c3ac37403e026866b
 ```
 
 Build the hosted app with `pnpm build` and deploy `dist/` or connect the repository to Vercel.

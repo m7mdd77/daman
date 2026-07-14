@@ -28,11 +28,15 @@ https://github.com/m7mdd77/daman
 
 ## Category
 
-Mainnet (after successful Testnet verification and low-value Mainnet deployment)
+Mainnet
 
 ## Contract address
 
-`TODO_AFTER_MAINNET_DEPLOYMENT`
+[`0x6edc1ec5b362823de96f522c3ac37403e026866b`](https://monadscan.com/address/0x6edc1ec5b362823de96f522c3ac37403e026866b)
+
+- [Full-match source verification](https://monadvision.com/contracts/full_match/143/0x6edc1ec5b362823de96f522c3ac37403e026866b/)
+- [Mainnet deployment transaction](https://monadscan.com/tx/0x25f5c8223b0f44d10cc5a62b52262434487fe2f729c28007eb8bc850aad2f239)
+- [Completed Testnet escrow contract](https://testnet.monadscan.com/address/0x5de920b800e781c648cae2600c351892f7ba7bf2)
 
 ## Demo video
 
