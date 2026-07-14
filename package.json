@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test": "hardhat test",
     "contract:compile": "hardhat compile",
-    "contract:export": "node scripts/export-deployment-artifact.cjs",
+    "contract:export": "hardhat compile && node scripts/export-deployment-artifact.cjs",
     "contract:deploy:testnet": "hardhat run scripts/deploy.cjs --network monadTestnet",
     "contract:deploy:mainnet": "hardhat run scripts/deploy.cjs --network monadMainnet",
     "contract:verify:testnet": "hardhat verify --network monadTestnet",
