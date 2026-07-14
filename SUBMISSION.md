@@ -24,7 +24,7 @@ Daman deliberately solves one narrow problem well: safe in-person handoffs. It h
 
 ## GitHub repository
 
-`TODO_AFTER_GITHUB_PUSH`
+https://github.com/m7mdd77/daman
 
 ## Category
 
